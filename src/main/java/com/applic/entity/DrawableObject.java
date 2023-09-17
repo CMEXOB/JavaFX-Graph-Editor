@@ -5,10 +5,9 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public abstract class DrawableObject implements Drawable{
-    protected List<Integer> xPoints;
-    protected List<Integer> yPoints;
-    @Getter
+    protected List<Point> points;
     protected int countOfPoint;
 
     public DrawableObject() {
@@ -16,23 +15,10 @@ public abstract class DrawableObject implements Drawable{
 
     public DrawableObject(int countOfPoint) {
         this.countOfPoint = countOfPoint;
-        xPoints = new ArrayList<>();
-        yPoints = new ArrayList<>();
+        points = new ArrayList<>();
     }
 
-    public void addXPoint(Integer x){
-        xPoints.add(x);
-    }
-
-    public void addYPoint(Integer y){
-        yPoints.add(y);
-    }
-
-    public List<Integer> getXPoints() {
-        return xPoints;
-    }
-
-    public List<Integer> getYPoints() {
-        return yPoints;
+    public void addPoint(Point point){
+        points.add(point);
     }
 }

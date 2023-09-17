@@ -13,9 +13,9 @@
 <VBox prefHeight="600.0" prefWidth="840.0"
       xmlns="http://javafx.com/javafx/20.0.1"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.applic.Controller">
+      fx:controller="com.applic.Controller" fx:id="sc">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
+    <MenuBar VBox.vgrow="NEVER" fx:id="menu">
       <menus>
         <Menu mnemonicParsing="false" text="File">
         </Menu>
@@ -32,9 +32,9 @@
     </MenuBar>
       <ToolBar prefHeight="4.0" prefWidth="840.0">
         <items>
-          <TextField fx:id="debugSize" text="100" />
+          <TextField fx:id="debugSize" text="1" />
           <CheckBox fx:id="debug" text="Debug" />
-          <Button fx:id="next" text="Next"/>
+          <Button fx:id="next" text="Next" disable="true"/>
         </items>
       </ToolBar>
     <Canvas fx:id="canvas" width="840" height="600"/>
