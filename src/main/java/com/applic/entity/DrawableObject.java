@@ -1,11 +1,14 @@
 package com.applic.entity;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DrawableObject implements Drawable{
-    protected List<Double> xPoints;
-    protected List<Double> yPoints;
+    protected List<Integer> xPoints;
+    protected List<Integer> yPoints;
+    @Getter
     protected int countOfPoint;
 
     public DrawableObject() {
@@ -13,27 +16,23 @@ public abstract class DrawableObject implements Drawable{
 
     public DrawableObject(int countOfPoint) {
         this.countOfPoint = countOfPoint;
-        xPoints = new ArrayList<>(countOfPoint);
-        yPoints = new ArrayList<>(countOfPoint);
+        xPoints = new ArrayList<>();
+        yPoints = new ArrayList<>();
     }
 
-    public int getCountOfPoint() {
-        return countOfPoint;
-    }
-
-    public void addXPoint(Double x){
+    public void addXPoint(Integer x){
         xPoints.add(x);
     }
 
-    public void addYPoint(Double y){
+    public void addYPoint(Integer y){
         yPoints.add(y);
     }
 
-    public List<Double> getXPoints() {
+    public List<Integer> getXPoints() {
         return xPoints;
     }
 
-    public List<Double> getYPoints() {
+    public List<Integer> getYPoints() {
         return yPoints;
     }
 }

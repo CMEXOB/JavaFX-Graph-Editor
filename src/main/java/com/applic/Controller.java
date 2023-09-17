@@ -25,51 +25,67 @@ public class Controller {
     private Canvas canvas;
     List<Drawable> drawables;
     private DrawableObject currentObject;
+    private List<Integer> xPoints;
+    private List<Integer> yPoints;
     int count;
+    boolean isDraw = false;
 
     EventHandler<MouseEvent> addLineEvent = new EventHandler<MouseEvent>() {
-
         @Override
         public void handle(MouseEvent mouseEvent) {
-            currentObject.addXPoint(mouseEvent.getX());
-            currentObject.addYPoint(mouseEvent.getY());
+            currentObject.addXPoint((int)mouseEvent.getX());
+            currentObject.addYPoint((int)mouseEvent.getY());
             count++;
             if(count >= currentObject.getCountOfPoint()){
-                draw();
+                currentObject.draw();
+                if(!debug.isSelected()){
+                    draw();
+                }
+                else {
+                    isDraw = true;
+                    index = 0;
+                }
                 canvas.removeEventFilter(MouseEvent.MOUSE_CLICKED, addLineEvent);
             }
         }
     };
     int dStep = 0;
     private void draw(){
-        double max = Math.max(Math.abs(currentObject.getXPoints().get(0) - currentObject.getXPoints().get(1)),
-                Math.abs(currentObject.getYPoints().get(0) - currentObject.getYPoints().get(1)));
-        double dx = (currentObject.getXPoints().get(1) - currentObject.getXPoints().get(0)) / max;
-        double dy = (currentObject.getYPoints().get(1) - currentObject.getYPoints().get(0)) / max;
-        double x = currentObject.getXPoints().get(0) + 0.5 * Math.signum(dx);
-        double y = currentObject.getYPoints().get(0) + 0.5 * Math.signum(dy);
-        for(int i = 0; i < max; i++){
-            x = x + dx;
-            y = y + dy;
+        for(int i = 0; i < currentObject.getXPoints().size(); i++){
             if(debug.isSelected() ){
                 if(i < Integer.parseInt(debugSize.getText()) * dStep ){//
-                    canvas.getGraphicsContext2D().fillRect((int)x, (int)y, 1, 1);
+                    canvas.getGraphicsContext2D().fillRect(currentObject.getXPoints().get(i),
+                            currentObject.getYPoints().get(i), 1, 1);
                 }
                 else{
                     break;
                 }
             }
             else {
-                canvas.getGraphicsContext2D().fillRect((int)x, (int)y, 1, 1);
+                canvas.getGraphicsContext2D().fillRect(currentObject.getXPoints().get(i),
+                        currentObject.getYPoints().get(i), 1, 1);
             }
+        }
+    }
+    int index;
+    private void drawD(){
+        for(;index < currentObject.getXPoints().size() && index < Integer.parseInt(debugSize.getText()) * (dStep) ; index++){
+            canvas.getGraphicsContext2D().fillRect(currentObject.getXPoints().get(index),
+                    currentObject.getYPoints().get(index), 1, 1);
+        }
+        if(index == currentObject.getXPoints().size()){
+            isDraw = false;
+            dStep = 0;
         }
     }
 
     public void initialize() {
         drawables = new ArrayList<>();
         next.setOnAction(e ->{
-           dStep++;
-           draw();
+            if(isDraw){
+                dStep++;
+                drawD();
+            }
         });
     }
 
