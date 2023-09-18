@@ -18,6 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,8 @@ public class Controller {
     private List<Integer> yPoints;
     int count;
     boolean isDraw = false;
+    int index;
+    int dStep = 0;
 
     EventHandler<MouseEvent> addLineEvent = new EventHandler<MouseEvent>() {
 
@@ -66,16 +69,16 @@ public class Controller {
             }
         }
     };
-    int dStep = 0;
     private void draw(){
         for(int i = 0; i < currentObject.getPoints().size(); i++){
+            canvas.getGraphicsContext2D().setFill(currentObject.getPoints().get(i).getColor());
             canvas.getGraphicsContext2D().fillRect(currentObject.getPoints().get(i).getX(),
                     currentObject.getPoints().get(i).getY(), 1, 1);
         }
     }
-    int index;
     private void drawD(){
         for(;index < currentObject.getPoints().size() && index < Integer.parseInt(debugSize.getText()) * (dStep) ; index++){
+            canvas.getGraphicsContext2D().setFill(currentObject.getPoints().get(index).getColor());
             canvas.getGraphicsContext2D().fillRect(currentObject.getPoints().get(index).getX(),
                     currentObject.getPoints().get(index).getY(), 1, 1);
         }
@@ -113,16 +116,10 @@ public class Controller {
     }
 
     public void createLine(int type) {
-        switch (type){
-            case 0:
-                currentObject = new ZdaLine();
-                break;
-            case 1:
-                currentObject = new BresenhamLine();
-                break;
-            case 2:
-                currentObject = new WuLine();
-                break;
+        switch (type) {
+            case 0 -> currentObject = new ZdaLine();
+            case 1 -> currentObject = new BresenhamLine();
+            case 2 -> currentObject = new WuLine();
         }
         count = 0;
         drawables.add(currentObject);
