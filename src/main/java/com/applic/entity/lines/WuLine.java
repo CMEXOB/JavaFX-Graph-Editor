@@ -7,6 +7,11 @@ import javafx.scene.paint.Color;
 public class WuLine extends Line{
     @Override
     public void createDrawPoints() {
+        if(inputPoints.get(1).getX().equals(inputPoints.get(0).getX()) ||
+                inputPoints.get(1).getY().equals(inputPoints.get(0).getY())){
+            drawStraightLine();
+            return;
+        }
         int x1 = inputPoints.get(0).getX();
         int x2 = inputPoints.get(1).getX();
         int y1 = inputPoints.get(0).getY();

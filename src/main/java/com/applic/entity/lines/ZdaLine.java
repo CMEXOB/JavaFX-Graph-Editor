@@ -9,6 +9,11 @@ public class ZdaLine extends Line{
 
     @Override
     public void createDrawPoints() {
+        if(inputPoints.get(1).getX().equals(inputPoints.get(0).getX()) ||
+                inputPoints.get(1).getY().equals(inputPoints.get(0).getY())){
+            drawStraightLine();
+            return;
+        }
         double max = Math.max(Math.abs(inputPoints.get(1).getX() - inputPoints.get(0).getX()), Math.abs(inputPoints.get(1).getY() - inputPoints.get(0).getY()));
         double dx = (inputPoints.get(1).getX() - inputPoints.get(0).getX()) / max;
         double dy = (inputPoints.get(1).getY() - inputPoints.get(0).getY()) / max;

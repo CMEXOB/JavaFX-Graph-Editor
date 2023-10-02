@@ -5,6 +5,11 @@ import com.applic.entity.Point;
 public class BresenhamLine extends Line{
     @Override
     public void createDrawPoints() {
+        if(inputPoints.get(1).getX().equals(inputPoints.get(0).getX()) ||
+                inputPoints.get(1).getY().equals(inputPoints.get(0).getY())){
+            drawStraightLine();
+            return;
+        }
         double ndx, ndy, es, el, err;
 
         double dx = inputPoints.get(1).getX() - inputPoints.get(0).getX();
