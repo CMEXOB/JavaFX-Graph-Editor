@@ -1,6 +1,5 @@
 package com.applic;
 
-import com.applic.entity.Drawable;
 import com.applic.entity.DrawableObject;
 import com.applic.entity.Point;
 import com.applic.entity.lines.BresenhamLine;
@@ -10,10 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -25,16 +21,16 @@ import java.util.List;
 
 public class Controller {
     public TextField debugSize;
-    public CheckBox debug;
+    public CheckBox isDebug;
     public Button next;
     public VBox sc;
     public MenuBar menu;
+    public CheckBox isDelete;
+    public CheckBox isScale;
     @FXML
     private Canvas canvas;
-    List<Drawable> drawables;
+    List<DrawableObject> drawables;
     private DrawableObject currentObject;
-    private List<Integer> xPoints;
-    private List<Integer> yPoints;
     int count;
     boolean isDraw = false;
     int index;
@@ -54,13 +50,13 @@ public class Controller {
             count++;
             if(count >= currentObject.getCountOfPoint()){
                 currentObject.draw();
-                if(!debug.isSelected()){
-                    draw();
+                if(!isDebug.isSelected()){
+                    draw(currentObject);
                 }
                 else {
                     isDraw = true;
                     index = 0;
-                    debug.setDisable(true);
+                    isDebug.setDisable(true);
                     debugSize.setDisable(true);
                     menu.setDisable(true);
                 }
@@ -69,11 +65,31 @@ public class Controller {
             }
         }
     };
-    private void draw(){
-        for(int i = 0; i < currentObject.getPoints().size(); i++){
-            canvas.getGraphicsContext2D().setFill(currentObject.getPoints().get(i).getColor());
-            canvas.getGraphicsContext2D().fillRect(currentObject.getPoints().get(i).getX(),
-                    currentObject.getPoints().get(i).getY(), 1, 1);
+
+    EventHandler<MouseEvent> deleteObjectEvent = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            for(DrawableObject drawable : new ArrayList<>(drawables)){
+                if(drawable.isContainPoint((int) mouseEvent.getX(), (int) mouseEvent.getY())){
+                    drawables.remove(drawable);
+                    redrawAllObjects();
+                    break;
+                }
+            }
+        }
+    };
+
+    public void redrawAllObjects(){
+        canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        for(DrawableObject drawable : drawables){
+            draw(drawable);
+        }
+    }
+    private void draw(DrawableObject drawable){
+        for(int i = 0; i < drawable.getPoints().size(); i++){
+            canvas.getGraphicsContext2D().setFill(drawable.getPoints().get(i).getColor());
+            canvas.getGraphicsContext2D().fillRect(drawable.getPoints().get(i).getX(),
+                    drawable.getPoints().get(i).getY(), 1, 1);
         }
     }
     private void drawD(){
@@ -85,7 +101,7 @@ public class Controller {
         if(index == currentObject.getPoints().size()){
             isDraw = false;
             dStep = 0;
-            debug.setDisable(false);
+            isDebug.setDisable(false);
             debugSize.setDisable(false);
             menu.setDisable(false);
         }
@@ -93,8 +109,18 @@ public class Controller {
 
     public void initialize() {
         drawables = new ArrayList<>();
-        debug.setOnAction(e->{
-            next.setDisable(!debug.isSelected());
+        isDebug.setOnAction(e->{
+            next.setDisable(!isDebug.isSelected());
+        });
+        isScale.setOnAction(e->{
+            if(isScale.isSelected()){
+                canvas.setScaleX(3);
+                canvas.setScaleY(3);
+            }
+            else {
+                canvas.setScaleX(1);
+                canvas.setScaleY(1);
+            }
         });
         next.setOnAction(e ->{
             if(isDraw){
@@ -102,10 +128,20 @@ public class Controller {
                 drawD();
             }
         });
+        isDelete.setOnAction(e->{
+            if(isDelete.isSelected()){
+                menu.setDisable(true);
+                canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, deleteObjectEvent);
+            }
+            else {
+                menu.setDisable(false);
+                canvas.removeEventFilter(MouseEvent.MOUSE_CLICKED, deleteObjectEvent);
+            }
+        });
         sc.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.W && debug.isSelected()) {
+                if (event.getCode() == KeyCode.W && isDebug.isSelected()) {
                     if(isDraw){
                         dStep++;
                         drawD();
