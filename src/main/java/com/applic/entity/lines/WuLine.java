@@ -6,14 +6,13 @@ import javafx.scene.paint.Color;
 
 public class WuLine extends Line{
     @Override
-    public void draw() {
-        int x1 = points.get(0).getX();
-        int x2 = points.get(1).getX();
-        int y1 = points.get(0).getY();
-        int y2 = points.get(1).getY();
+    public void createDrawPoints() {
+        int x1 = inputPoints.get(0).getX();
+        int x2 = inputPoints.get(1).getX();
+        int y1 = inputPoints.get(0).getY();
+        int y2 = inputPoints.get(1).getY();
 
         Point added;
-        points.clear();
         int dx = x2 - x1;
         int dy = y2 - y1;
 
@@ -33,8 +32,8 @@ public class WuLine extends Line{
         double gradient = 0;
         double inter;
 
-        points.add(new Point(x1, y1));
-        points.add(new Point(x2, y2));
+        drawPoints.add(new Point(x1, y1));
+        drawPoints.add(new Point(x2, y2));
         if (Math.abs(dx) > Math.abs(dy)) {
             gradient = (double) dy / dx;
             inter = y1 + gradient;
@@ -42,11 +41,11 @@ public class WuLine extends Line{
             for (int x = x1; x < x2; x++) {
                 added = new Point(x, (int) inter);
                 added.setColor(new Color(0, 0, 0, (1 - (inter - (int) inter))));
-                points.add(added);
+                drawPoints.add(added);
 
                 added = new Point(x, (int) inter + 1);
                 added.setColor(new Color(0, 0, 0,  inter - (int) inter));
-                points.add(added);
+                drawPoints.add(added);
 
                 inter += gradient;
             }
@@ -59,11 +58,11 @@ public class WuLine extends Line{
 
                 added = new Point((int) inter, y);
                 added.setColor(new Color(0, 0, 0,   (1 - (inter - (int) inter))));
-                points.add(added);
+                drawPoints.add(added);
 
                 added = new Point((int) inter + 1, y);
                 added.setColor(new Color(0, 0, 0,  inter - (int) inter));
-                points.add(added);
+                drawPoints.add(added);
 
                 inter += gradient;
             }

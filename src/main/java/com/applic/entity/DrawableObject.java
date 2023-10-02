@@ -7,30 +7,35 @@ import java.util.List;
 
 @Getter
 public abstract class DrawableObject implements Drawable{
-    protected List<Point> points;
-    protected int countOfPoint;
+    protected List<Point> inputPoints;
+    protected List<Point> drawPoints;
+    protected int countOfInputPoint;
 
     public DrawableObject() {
     }
 
-    public DrawableObject(int countOfPoint) {
-        this.countOfPoint = countOfPoint;
-        points = new ArrayList<>();
+    public DrawableObject(int countOfInputPoint) {
+        this.countOfInputPoint = countOfInputPoint;
+        inputPoints = new ArrayList<>();
+        drawPoints = new ArrayList<>();
     }
 
-    public void addPoint(Point point){
-        points.add(point);
+    public void addInputPoint(Point point){
+        drawPoints.add(point);
     }
-    public boolean isContainPoint(Point point){
-        for(Point objectPoint : points){
+    public void addDrawPoint(Point point){
+        drawPoints.add(point);
+    }
+    public boolean isContainDrawPoint(Point point){
+        for(Point objectPoint : drawPoints){
             if(objectPoint.getX().equals(point.getX()) && objectPoint.getY().equals(point.getY())){
                 return true;
             }
         }
         return false;
     }
-    public boolean isContainPoint(Integer x, Integer y){
-        for(Point objectPoint : points){
+    public boolean isContainDrawPoint(Integer x, Integer y){
+        for(Point objectPoint : drawPoints){
             if(objectPoint.getX().equals(x) && objectPoint.getY().equals(y)){
                 return true;
             }

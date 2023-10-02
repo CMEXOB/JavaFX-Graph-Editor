@@ -14,7 +14,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +45,10 @@ public class Controller {
         }
         @Override
         public void handle(MouseEvent mouseEvent) {
-            currentObject.addPoint(new Point((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+            currentObject.addInputPoint(new Point((int)mouseEvent.getX(),(int)mouseEvent.getY()));
             count++;
-            if(count >= currentObject.getCountOfPoint()){
-                currentObject.draw();
+            if(count >= currentObject.getCountOfInputPoint()){
+                currentObject.createDrawPoints();
                 if(!isDebug.isSelected()){
                     draw(currentObject);
                 }
@@ -70,7 +69,7 @@ public class Controller {
         @Override
         public void handle(MouseEvent mouseEvent) {
             for(DrawableObject drawable : new ArrayList<>(drawables)){
-                if(drawable.isContainPoint((int) mouseEvent.getX(), (int) mouseEvent.getY())){
+                if(drawable.isContainDrawPoint((int) mouseEvent.getX(), (int) mouseEvent.getY())){
                     drawables.remove(drawable);
                     redrawAllObjects();
                     break;
@@ -86,19 +85,19 @@ public class Controller {
         }
     }
     private void draw(DrawableObject drawable){
-        for(int i = 0; i < drawable.getPoints().size(); i++){
-            canvas.getGraphicsContext2D().setFill(drawable.getPoints().get(i).getColor());
-            canvas.getGraphicsContext2D().fillRect(drawable.getPoints().get(i).getX(),
-                    drawable.getPoints().get(i).getY(), 1, 1);
+        for(int i = 0; i < drawable.getDrawPoints().size(); i++){
+            canvas.getGraphicsContext2D().setFill(drawable.getDrawPoints().get(i).getColor());
+            canvas.getGraphicsContext2D().fillRect(drawable.getDrawPoints().get(i).getX(),
+                    drawable.getDrawPoints().get(i).getY(), 1, 1);
         }
     }
     private void drawD(){
-        for(;index < currentObject.getPoints().size() && index < Integer.parseInt(debugSize.getText()) * (dStep) ; index++){
-            canvas.getGraphicsContext2D().setFill(currentObject.getPoints().get(index).getColor());
-            canvas.getGraphicsContext2D().fillRect(currentObject.getPoints().get(index).getX(),
-                    currentObject.getPoints().get(index).getY(), 1, 1);
+        for(; index < currentObject.getDrawPoints().size() && index < Integer.parseInt(debugSize.getText()) * (dStep) ; index++){
+            canvas.getGraphicsContext2D().setFill(currentObject.getDrawPoints().get(index).getColor());
+            canvas.getGraphicsContext2D().fillRect(currentObject.getDrawPoints().get(index).getX(),
+                    currentObject.getDrawPoints().get(index).getY(), 1, 1);
         }
-        if(index == currentObject.getPoints().size()){
+        if(index == currentObject.getDrawPoints().size()){
             isDraw = false;
             dStep = 0;
             isDebug.setDisable(false);

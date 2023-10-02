@@ -1,7 +1,6 @@
 package com.applic.entity.lines;
 
 import com.applic.entity.Point;
-import javafx.scene.canvas.GraphicsContext;
 
 public class ZdaLine extends Line{
 
@@ -9,18 +8,18 @@ public class ZdaLine extends Line{
     }
 
     @Override
-    public void draw() {
-        double max = Math.max(Math.abs(points.get(1).getX() - points.get(0).getX()), Math.abs(points.get(1).getY() - points.get(0).getY()));
-        double dx = (points.get(1).getX() - points.get(0).getX()) / max;
-        double dy = (points.get(1).getY() - points.get(0).getY()) / max;
-        double x = points.get(0).getX() + 0.5 * Math.signum(dx);
-        double y = points.get(0).getY() + 0.5 * Math.signum(dy);
-        points.clear();
-        points.add(new Point((int)x, (int)y));
+    public void createDrawPoints() {
+        double max = Math.max(Math.abs(inputPoints.get(1).getX() - inputPoints.get(0).getX()), Math.abs(inputPoints.get(1).getY() - inputPoints.get(0).getY()));
+        double dx = (inputPoints.get(1).getX() - inputPoints.get(0).getX()) / max;
+        double dy = (inputPoints.get(1).getY() - inputPoints.get(0).getY()) / max;
+        double x = inputPoints.get(0).getX() + 0.5 * Math.signum(dx);
+        double y = inputPoints.get(0).getY() + 0.5 * Math.signum(dy);
+
+        drawPoints.add(new Point((int)x, (int)y));
         for(int i = 0; i < max; i++){
             x = x + dx;
             y = y + dy;
-            points.add(new Point((int)x, (int)y));
+            drawPoints.add(new Point((int)x, (int)y));
         }
     }
 }

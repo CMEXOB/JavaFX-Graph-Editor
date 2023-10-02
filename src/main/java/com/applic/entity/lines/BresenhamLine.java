@@ -4,18 +4,18 @@ import com.applic.entity.Point;
 
 public class BresenhamLine extends Line{
     @Override
-    public void draw() {
+    public void createDrawPoints() {
         double ndx, ndy, es, el, err;
 
-        double dx = points.get(1).getX() - points.get(0).getX();
-        double dy = points.get(1).getY() - points.get(0).getY();
+        double dx = inputPoints.get(1).getX() - inputPoints.get(0).getX();
+        double dy = inputPoints.get(1).getY() - inputPoints.get(0).getY();
 
         int x, y;
-        x = points.get(0).getX();
-        y = points.get(0).getY();
+        x = inputPoints.get(0).getX();
+        y = inputPoints.get(0).getY();
 
-        points.clear();
-        points.add(new Point(x,y));
+
+        drawPoints.add(new Point(x,y));
 
         double dirX = Math.signum(dx);
         double dirY = Math.signum(dy);
@@ -35,12 +35,11 @@ public class BresenhamLine extends Line{
             es = dx;
             el = dy;
         }
-        err = el/2;
+        err = 2 * es - el ;
 
         for (int t = 0; t < el; t++){
-            err -= es;
-            if (err < 0) {
-                err += el;
+            if (err > 0) {
+                err -= 2 * el;
                 x += dirX;
                 y += dirY;
             }
@@ -48,7 +47,8 @@ public class BresenhamLine extends Line{
                 x += ndx;
                 y += ndy;
             }
-            points.add(new Point(x,y));
+            drawPoints.add(new Point(x,y));
+            err += 2 * es;
         }
     }
 }
