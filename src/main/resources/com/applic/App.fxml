@@ -10,6 +10,8 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.Group?>
 <VBox prefHeight="600.0" prefWidth="840.0"
       xmlns="http://javafx.com/javafx/20.0.1"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -17,10 +19,6 @@
   <children>
     <MenuBar VBox.vgrow="NEVER" fx:id="menu">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-        </Menu>
         <Menu mnemonicParsing="false" text="Отрезки">
           <items>
             <MenuItem mnemonicParsing="false" text="ЦДА" onAction="#createZdaLine"/>
@@ -28,15 +26,22 @@
             <MenuItem mnemonicParsing="false" text="Ву" onAction="#createWuLine"/>
           </items>
         </Menu>
+          <Menu mnemonicParsing="false" text="О программе"/>
       </menus>
     </MenuBar>
       <ToolBar prefHeight="4.0" prefWidth="840.0">
         <items>
           <TextField fx:id="debugSize" text="1" />
-          <CheckBox fx:id="debug" text="Debug" />
+          <CheckBox fx:id="isDebug" text="Debug" />
           <Button fx:id="next" text="Next" disable="true"/>
+            <CheckBox fx:id="isDelete" text="Удалить" />
+            <CheckBox fx:id="isScale" text="Увеличить" />
         </items>
       </ToolBar>
-    <Canvas fx:id="canvas" width="840" height="600"/>
+      <ScrollPane>
+          <Group>
+            <Canvas fx:id="canvas" width="840" height="600" />
+          </Group>
+      </ScrollPane>
   </children>
 </VBox>
