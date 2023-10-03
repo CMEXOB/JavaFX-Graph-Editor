@@ -21,7 +21,7 @@ public abstract class DrawableObject implements Drawable{
     }
 
     public void addInputPoint(Point point){
-        drawPoints.add(point);
+        inputPoints.add(point);
     }
     public void addDrawPoint(Point point){
         drawPoints.add(point);
