@@ -174,4 +174,8 @@ public class Controller {
     public void createWuLine(ActionEvent actionEvent) {
         createLine(2);
     }
+
+    public void aboutProgram(ActionEvent actionEvent) {
+        AboutPopup.display();
+    }
 }

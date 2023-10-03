@@ -26,7 +26,11 @@
             <MenuItem mnemonicParsing="false" text="Ву" onAction="#createWuLine"/>
           </items>
         </Menu>
-          <Menu mnemonicParsing="false" text="О программе"/>
+          <Menu mnemonicParsing="false" text="О программе" >
+            <items>
+              <MenuItem mnemonicParsing="false" text="О программе" onAction="#aboutProgram"/>
+            </items>
+          </Menu>
       </menus>
     </MenuBar>
       <ToolBar prefHeight="4.0" prefWidth="840.0">
