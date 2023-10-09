@@ -12,6 +12,8 @@ public abstract class DrawableObject implements Drawable{
     protected int countOfInputPoint;
 
     public DrawableObject() {
+        inputPoints = new ArrayList<>();
+        drawPoints = new ArrayList<>();
     }
 
     public DrawableObject(int countOfInputPoint) {
@@ -25,6 +27,12 @@ public abstract class DrawableObject implements Drawable{
     }
     public void addDrawPoint(Point point){
         drawPoints.add(point);
+    }
+    public void addInputPoint(int x, int y){
+        inputPoints.add(new Point(x,y));
+    }
+    public void addDrawPoint(int x, int y){
+        drawPoints.add(new Point(x,y));
     }
     public boolean isContainDrawPoint(Point point){
         for(Point objectPoint : drawPoints){

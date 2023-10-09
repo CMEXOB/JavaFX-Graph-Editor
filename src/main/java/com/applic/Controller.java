@@ -2,6 +2,7 @@ package com.applic;
 
 import com.applic.entity.DrawableObject;
 import com.applic.entity.Point;
+import com.applic.entity.second_order_curves.*;
 import com.applic.entity.lines.BresenhamLine;
 import com.applic.entity.lines.WuLine;
 import com.applic.entity.lines.ZdaLine;
@@ -96,6 +97,7 @@ public class Controller {
             canvas.getGraphicsContext2D().setFill(currentObject.getDrawPoints().get(index).getColor());
             canvas.getGraphicsContext2D().fillRect(currentObject.getDrawPoints().get(index).getX(),
                     currentObject.getDrawPoints().get(index).getY(), 1, 1);
+            System.out.println("[x: "+currentObject.getDrawPoints().get(index).getX()+", y: " + currentObject.getDrawPoints().get(index).getY()+"]");
         }
         if(index == currentObject.getDrawPoints().size()){
             isDraw = false;
@@ -149,33 +151,45 @@ public class Controller {
             }
         });
     }
-
-    public void createLine(int type) {
-        switch (type) {
-            case 0 -> currentObject = new ZdaLine();
-            case 1 -> currentObject = new BresenhamLine();
-            case 2 -> currentObject = new WuLine();
-        }
+    public void aboutProgram(ActionEvent actionEvent) {
+        AboutPopup.display();
+    }
+    public void prepareToDraw() {
         count = 0;
         drawables.add(currentObject);
 
         canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, addLineEvent);
     }
-
     public void createZdaLine(ActionEvent actionEvent) {
-        createLine(0);
+        currentObject = new ZdaLine();
+        prepareToDraw();
     }
-
-
     public void createBresenhamLine(ActionEvent actionEvent) {
-        createLine(1);
+        currentObject = new BresenhamLine();
+        prepareToDraw();
     }
-
     public void createWuLine(ActionEvent actionEvent) {
-        createLine(2);
+        currentObject = new WuLine();
+        prepareToDraw();
     }
-
-    public void aboutProgram(ActionEvent actionEvent) {
-        AboutPopup.display();
+    public void createCircle(ActionEvent actionEvent) {
+        currentObject = new Conic();
+        prepareToDraw();
+    }
+    public void createEllipse(ActionEvent actionEvent) {
+        currentObject = new Ellipse();
+        prepareToDraw();
+    }
+    public void createHorizontalHyperbola(ActionEvent actionEvent) {
+        currentObject = new HorizontalHyperbola();
+        prepareToDraw();
+    }
+    public void createVerticalHyperbola(ActionEvent actionEvent) {
+        currentObject = new VerticalHyperbola();
+        prepareToDraw();
+    }
+    public void createParabola(ActionEvent actionEvent) {
+        currentObject = new Parabola();
+        prepareToDraw();
     }
 }

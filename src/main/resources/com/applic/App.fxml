@@ -26,6 +26,15 @@
             <MenuItem mnemonicParsing="false" text="Ву" onAction="#createWuLine"/>
           </items>
         </Menu>
+        <Menu mnemonicParsing="false" text="Кривые второго порядка">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Окружность" onAction="#createCircle"/>
+            <MenuItem mnemonicParsing="false" text="Эллипс" onAction="#createEllipse"/>
+            <MenuItem mnemonicParsing="false" text="Горизонтальная гипербола" onAction="#createHorizontalHyperbola"/>
+            <MenuItem mnemonicParsing="false" text="Вертикальная гипербола" onAction="#createVerticalHyperbola"/>
+            <MenuItem mnemonicParsing="false" text="Парабола" onAction="#createParabola"/>
+          </items>
+        </Menu>
           <Menu mnemonicParsing="false" text="О программе" >
             <items>
               <MenuItem mnemonicParsing="false" text="О программе" onAction="#aboutProgram"/>
