@@ -1,7 +1,7 @@
 package com.applic.entity.second_order_curves;
 
+import com.applic.Application;
 import com.applic.entity.DrawableObject;
-import com.applic.entity.Point;
 
 public abstract class SecondOrderCurve extends DrawableObject {
     protected int x;
@@ -17,6 +17,8 @@ public abstract class SecondOrderCurve extends DrawableObject {
     public void createQuadrantPoints(){
         addDrawPoint(x,y);
         error = calculateStartError();
+        limitX = calculateLimitX();
+        limitY = calculateLimitY();
         while(isNotCompleteQuadrant()){
             if(error == 0){
                 moveDiagonal();
@@ -40,6 +42,15 @@ public abstract class SecondOrderCurve extends DrawableObject {
             addDrawPoint(x,y);
         }
     }
+
+    protected int calculateLimitY() {
+        return Math.max(Application.getHeight() - inputPoints.get(0).getY(),inputPoints.get(0).getY());
+    }
+
+    protected int calculateLimitX() {
+        return Math.max(Application.getWidth() - inputPoints.get(0).getX(),inputPoints.get(0).getX());
+    }
+
     protected abstract  boolean isNotCompleteQuadrant();
     protected boolean isDiagonalOrHorizontal(){
         return error < 0;

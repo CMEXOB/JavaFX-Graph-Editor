@@ -32,6 +32,11 @@ public class Ellipse extends SecondOrderCurve {
     }
 
     @Override
+    protected int calculateLimitY() {
+        return 0;
+    }
+
+    @Override
     protected boolean isNotCompleteQuadrant() {
         return y > limitY;
     }

@@ -20,10 +20,6 @@ public class Parabola extends SecondOrderCurve {
         p = Math.abs(p);
         x = 0;
         y = 0;
-        limitX = 1000;
-        limitY = 500;
-        error = 1 - 2 * p;
-        drawPoints.add(new Point(x, y));
         createQuadrantPoints();
         for(Point point : new ArrayList<>(drawPoints)){
             drawPoints.add(new Point(point.getX(), -point.getY()));

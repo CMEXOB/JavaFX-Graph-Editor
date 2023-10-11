@@ -17,8 +17,6 @@ public class VerticalHyperbola extends SecondOrderCurve {
         b = Math.abs(inputPoints.get(2).getY() - inputPoints.get(0).getY());
         x = 0;
         y = -b;
-        limitX = 1000;
-        limitY = 500;
         createQuadrantPoints();
         for(Point point : new ArrayList<>(drawPoints)){
             drawPoints.add(new Point(- point.getX(), point.getY()));
