@@ -6,6 +6,7 @@ module com.applic {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires lombok;
+    requires colt;
 
     opens com.applic to javafx.fxml;
     exports com.applic;
