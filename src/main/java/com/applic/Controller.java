@@ -2,6 +2,9 @@ package com.applic;
 
 import com.applic.entity.DrawableObject;
 import com.applic.entity.Point;
+import com.applic.entity.curves_lines.BezierCurveLine;
+import com.applic.entity.curves_lines.BsplainCurveLine;
+import com.applic.entity.curves_lines.ErmitCurveLine;
 import com.applic.entity.second_order_curves.*;
 import com.applic.entity.lines.BresenhamLine;
 import com.applic.entity.lines.WuLine;
@@ -13,6 +16,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
@@ -194,7 +198,8 @@ public class Controller {
     }
 
     public void createErmitCurveLine(ActionEvent actionEvent) {
-
+        currentObject = new ErmitCurveLine();
+        prepareToDraw();
     }
 
     public void createBezierCurveLine(ActionEvent actionEvent) {
