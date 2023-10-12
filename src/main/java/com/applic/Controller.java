@@ -52,6 +52,18 @@ public class Controller {
         }
     };
 
+    EventHandler<MouseEvent> addDrawableObjectWithoutCountOfPointEvent = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if(mouseEvent.getButton() == MouseButton.SECONDARY){
+                prepareForDraw();
+                canvas.removeEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithoutCountOfPointEvent);
+            }
+            else {
+                currentObject.addInputPoint(new Point((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+            }
+        }
+    };
     EventHandler<MouseEvent> deleteObjectEvent = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
@@ -153,56 +165,63 @@ public class Controller {
     public void aboutProgram(ActionEvent actionEvent) {
         AboutPopup.display();
     }
-    public void prepareForInput() {
+    public void prepareForInputWithCountOfPoint() {
         count = 0;
         drawables.add(currentObject);
 
         canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithCountOfPointEvent);
     }
+    public void prepareForInputWithoutCountOfPoint() {
+        count = 0;
+        drawables.add(currentObject);
+
+        canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithoutCountOfPointEvent);
+    }
     public void createZdaLine(ActionEvent actionEvent) {
         currentObject = new ZdaLine();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
     public void createBresenhamLine(ActionEvent actionEvent) {
         currentObject = new BresenhamLine();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
     public void createWuLine(ActionEvent actionEvent) {
         currentObject = new WuLine();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
     public void createCircle(ActionEvent actionEvent) {
         currentObject = new Conic();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
     public void createEllipse(ActionEvent actionEvent) {
         currentObject = new Ellipse();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
     public void createHorizontalHyperbola(ActionEvent actionEvent) {
         currentObject = new HorizontalHyperbola();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
     public void createVerticalHyperbola(ActionEvent actionEvent) {
         currentObject = new VerticalHyperbola();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
     public void createParabola(ActionEvent actionEvent) {
         currentObject = new Parabola();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
 
     public void createErmitCurveLine(ActionEvent actionEvent) {
         currentObject = new ErmitCurveLine();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
 
     public void createBezierCurveLine(ActionEvent actionEvent) {
         currentObject = new BezierCurveLine();
-        prepareForInput();
+        prepareForInputWithCountOfPoint();
     }
 
     public void createBsplinCurveLine(ActionEvent actionEvent) {
-
+        currentObject = new BsplainCurveLine();
+        prepareForInputWithoutCountOfPoint();
     }
 }
