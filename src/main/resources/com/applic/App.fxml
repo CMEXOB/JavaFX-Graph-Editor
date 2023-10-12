@@ -35,6 +35,13 @@
             <MenuItem mnemonicParsing="false" text="Парабола" onAction="#createParabola"/>
           </items>
         </Menu>
+        <Menu mnemonicParsing="false" text="Кривые линии">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Эрмит" onAction="#createErmitCurveLine"/>
+            <MenuItem mnemonicParsing="false" text="Безье" onAction="#createBezierCurveLine"/>
+            <MenuItem mnemonicParsing="false" text="B-сплайн" onAction="#createBsplinCurveLine"/>
+          </items>
+        </Menu>
           <Menu mnemonicParsing="false" text="О программе" >
             <items>
               <MenuItem mnemonicParsing="false" text="О программе" onAction="#aboutProgram"/>

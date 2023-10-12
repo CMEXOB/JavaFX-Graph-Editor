@@ -192,4 +192,16 @@ public class Controller {
         currentObject = new Parabola();
         prepareToDraw();
     }
+
+    public void createErmitCurveLine(ActionEvent actionEvent) {
+
+    }
+
+    public void createBezierCurveLine(ActionEvent actionEvent) {
+
+    }
+
+    public void createBsplinCurveLine(ActionEvent actionEvent) {
+
+    }
 }
