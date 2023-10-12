@@ -203,7 +203,8 @@ public class Controller {
     }
 
     public void createBezierCurveLine(ActionEvent actionEvent) {
-
+        currentObject = new BezierCurveLine();
+        prepareToDraw();
     }
 
     public void createBsplinCurveLine(ActionEvent actionEvent) {
