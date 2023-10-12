@@ -40,32 +40,14 @@ public class Controller {
     int index;
     int dStep = 0;
 
-    EventHandler<MouseEvent> addLineEvent = new EventHandler<MouseEvent>() {
-
-        Point first;
-        Point second;
-        public void clear(){
-            first = null;
-            second = null;
-        }
+    EventHandler<MouseEvent> addDrawableObjectWithCountOfPointEvent = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
             currentObject.addInputPoint(new Point((int)mouseEvent.getX(),(int)mouseEvent.getY()));
             count++;
             if(count >= currentObject.getCountOfInputPoint()){
-                currentObject.createDrawPoints();
-                if(!isDebug.isSelected()){
-                    draw(currentObject);
-                }
-                else {
-                    isDraw = true;
-                    index = 0;
-                    isDebug.setDisable(true);
-                    debugSize.setDisable(true);
-                    menu.setDisable(true);
-                }
-                canvas.removeEventFilter(MouseEvent.MOUSE_CLICKED, addLineEvent);
-                clear();
+                prepareForDraw();
+                canvas.removeEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithCountOfPointEvent);
             }
         }
     };
@@ -82,7 +64,20 @@ public class Controller {
             }
         }
     };
+    public void prepareForDraw(){
+        currentObject.createDrawPoints();
+        if(!isDebug.isSelected()){
+            draw(currentObject);
+        }
+        else {
+            isDraw = true;
+            index = 0;
+            isDebug.setDisable(true);
+            debugSize.setDisable(true);
+            menu.setDisable(true);
+        }
 
+    }
     public void redrawAllObjects(){
         canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for(DrawableObject drawable : drawables){
@@ -158,53 +153,53 @@ public class Controller {
     public void aboutProgram(ActionEvent actionEvent) {
         AboutPopup.display();
     }
-    public void prepareToDraw() {
+    public void prepareForInput() {
         count = 0;
         drawables.add(currentObject);
 
-        canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, addLineEvent);
+        canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithCountOfPointEvent);
     }
     public void createZdaLine(ActionEvent actionEvent) {
         currentObject = new ZdaLine();
-        prepareToDraw();
+        prepareForInput();
     }
     public void createBresenhamLine(ActionEvent actionEvent) {
         currentObject = new BresenhamLine();
-        prepareToDraw();
+        prepareForInput();
     }
     public void createWuLine(ActionEvent actionEvent) {
         currentObject = new WuLine();
-        prepareToDraw();
+        prepareForInput();
     }
     public void createCircle(ActionEvent actionEvent) {
         currentObject = new Conic();
-        prepareToDraw();
+        prepareForInput();
     }
     public void createEllipse(ActionEvent actionEvent) {
         currentObject = new Ellipse();
-        prepareToDraw();
+        prepareForInput();
     }
     public void createHorizontalHyperbola(ActionEvent actionEvent) {
         currentObject = new HorizontalHyperbola();
-        prepareToDraw();
+        prepareForInput();
     }
     public void createVerticalHyperbola(ActionEvent actionEvent) {
         currentObject = new VerticalHyperbola();
-        prepareToDraw();
+        prepareForInput();
     }
     public void createParabola(ActionEvent actionEvent) {
         currentObject = new Parabola();
-        prepareToDraw();
+        prepareForInput();
     }
 
     public void createErmitCurveLine(ActionEvent actionEvent) {
         currentObject = new ErmitCurveLine();
-        prepareToDraw();
+        prepareForInput();
     }
 
     public void createBezierCurveLine(ActionEvent actionEvent) {
         currentObject = new BezierCurveLine();
-        prepareToDraw();
+        prepareForInput();
     }
 
     public void createBsplinCurveLine(ActionEvent actionEvent) {
