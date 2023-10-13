@@ -12,6 +12,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.layout.Pane?>
 <VBox prefHeight="600.0" prefWidth="840.0"
       xmlns="http://javafx.com/javafx/20.0.1"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -60,7 +61,10 @@
       </ToolBar>
       <ScrollPane>
           <Group>
-            <Canvas fx:id="canvas" width="840" height="600" />
+            <Pane fx:id="pane">
+              <Canvas fx:id="canvasPrime" width="840" height="600" />
+              <Canvas fx:id="canvasSecondary" width="840" height="600" />
+            </Pane>
           </Group>
       </ScrollPane>
   </children>

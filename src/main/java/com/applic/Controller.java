@@ -4,6 +4,7 @@ import com.applic.entity.DrawableObject;
 import com.applic.entity.Point;
 import com.applic.entity.curves_lines.BezierCurveLine;
 import com.applic.entity.curves_lines.BsplainCurveLine;
+import com.applic.entity.curves_lines.CurveLine;
 import com.applic.entity.curves_lines.ErmitCurveLine;
 import com.applic.entity.second_order_curves.*;
 import com.applic.entity.lines.BresenhamLine;
@@ -18,6 +19,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
@@ -31,10 +33,14 @@ public class Controller {
     public MenuBar menu;
     public CheckBox isDelete;
     public CheckBox isScale;
+    public Canvas canvasSecondary;
+    public Pane pane;
     @FXML
-    private Canvas canvas;
+    private Canvas canvasPrime;
     List<DrawableObject> drawables;
+    List<DrawableObject> movePoints;
     private DrawableObject currentObject;
+    private DrawableObject currentMovePoints;
     int count;
     boolean isDraw = false;
     int index;
@@ -47,7 +53,7 @@ public class Controller {
             count++;
             if(count >= currentObject.getCountOfInputPoint()){
                 prepareForDraw();
-                canvas.removeEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithCountOfPointEvent);
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithCountOfPointEvent);
             }
         }
     };
@@ -57,7 +63,7 @@ public class Controller {
         public void handle(MouseEvent mouseEvent) {
             if(mouseEvent.getButton() == MouseButton.SECONDARY){
                 prepareForDraw();
-                canvas.removeEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithoutCountOfPointEvent);
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithoutCountOfPointEvent);
             }
             else {
                 currentObject.addInputPoint(new Point((int)mouseEvent.getX(),(int)mouseEvent.getY()));
@@ -79,7 +85,7 @@ public class Controller {
     public void prepareForDraw(){
         currentObject.createDrawPoints();
         if(!isDebug.isSelected()){
-            draw(currentObject);
+            draw(currentObject,canvasPrime);
         }
         else {
             isDraw = true;
@@ -91,12 +97,12 @@ public class Controller {
 
     }
     public void redrawAllObjects(){
-        canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        canvasPrime.getGraphicsContext2D().clearRect(0, 0, canvasPrime.getWidth(), canvasPrime.getHeight());
         for(DrawableObject drawable : drawables){
-            draw(drawable);
+            draw(drawable,canvasPrime);
         }
     }
-    private void draw(DrawableObject drawable){
+    private void draw(DrawableObject drawable, Canvas canvas){
         for(int i = 0; i < drawable.getDrawPoints().size(); i++){
             canvas.getGraphicsContext2D().setFill(drawable.getDrawPoints().get(i).getColor());
             canvas.getGraphicsContext2D().fillRect(drawable.getDrawPoints().get(i).getX(),
@@ -105,8 +111,8 @@ public class Controller {
     }
     private void drawD(){
         for(; index < currentObject.getDrawPoints().size() && index < Integer.parseInt(debugSize.getText()) * (dStep) ; index++){
-            canvas.getGraphicsContext2D().setFill(currentObject.getDrawPoints().get(index).getColor());
-            canvas.getGraphicsContext2D().fillRect(currentObject.getDrawPoints().get(index).getX(),
+            canvasPrime.getGraphicsContext2D().setFill(currentObject.getDrawPoints().get(index).getColor());
+            canvasPrime.getGraphicsContext2D().fillRect(currentObject.getDrawPoints().get(index).getX(),
                     currentObject.getDrawPoints().get(index).getY(), 1, 1);
             System.out.println("[x: "+currentObject.getDrawPoints().get(index).getX()+", y: " + currentObject.getDrawPoints().get(index).getY()+"]");
         }
@@ -126,12 +132,12 @@ public class Controller {
         });
         isScale.setOnAction(e->{
             if(isScale.isSelected()){
-                canvas.setScaleX(3);
-                canvas.setScaleY(3);
+                pane.setScaleX(3);
+                pane.setScaleY(3);
             }
             else {
-                canvas.setScaleX(1);
-                canvas.setScaleY(1);
+                pane.setScaleX(1);
+                pane.setScaleY(1);
             }
         });
         next.setOnAction(e ->{
@@ -143,11 +149,11 @@ public class Controller {
         isDelete.setOnAction(e->{
             if(isDelete.isSelected()){
                 menu.setDisable(true);
-                canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, deleteObjectEvent);
+                pane.addEventFilter(MouseEvent.MOUSE_CLICKED, deleteObjectEvent);
             }
             else {
                 menu.setDisable(false);
-                canvas.removeEventFilter(MouseEvent.MOUSE_CLICKED, deleteObjectEvent);
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, deleteObjectEvent);
             }
         });
         sc.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -169,13 +175,13 @@ public class Controller {
         count = 0;
         drawables.add(currentObject);
 
-        canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithCountOfPointEvent);
+        pane.addEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithCountOfPointEvent);
     }
     public void prepareForInputWithoutCountOfPoint() {
         count = 0;
         drawables.add(currentObject);
 
-        canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithoutCountOfPointEvent);
+        pane.addEventFilter(MouseEvent.MOUSE_CLICKED, addDrawableObjectWithoutCountOfPointEvent);
     }
     public void createZdaLine(ActionEvent actionEvent) {
         currentObject = new ZdaLine();
