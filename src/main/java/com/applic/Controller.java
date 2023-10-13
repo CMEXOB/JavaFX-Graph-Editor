@@ -1,6 +1,7 @@
 package com.applic;
 
 import com.applic.entity.DrawableObject;
+import com.applic.entity.MovingPoint;
 import com.applic.entity.Point;
 import com.applic.entity.curves_lines.BezierCurveLine;
 import com.applic.entity.curves_lines.BsplainCurveLine;
@@ -35,12 +36,13 @@ public class Controller {
     public CheckBox isScale;
     public Canvas canvasSecondary;
     public Pane pane;
+    public CheckBox isChange;
     @FXML
     private Canvas canvasPrime;
     List<DrawableObject> drawables;
-    List<DrawableObject> movePoints;
+    List<MovingPoint> movePoints;
     private DrawableObject currentObject;
-    private DrawableObject currentMovePoints;
+    private MovingPoint currentMovePoints;
     int count;
     boolean isDraw = false;
     int index;
@@ -82,6 +84,88 @@ public class Controller {
             }
         }
     };
+    EventHandler<MouseEvent> changeObjectEvent = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            for(DrawableObject drawable : new ArrayList<>(drawables)){
+                if(drawable.isContainDrawPoint((int) mouseEvent.getX(), (int) mouseEvent.getY())){
+                    isChange.setDisable(true);
+                    currentObject = drawable;
+                    MovingPoint movePoint;
+                    movePoints = new ArrayList<>();
+                    for(Point point : currentObject.getInputPoints()){
+                        movePoint = new MovingPoint();
+                        movePoint.addInputPoint(point);
+                        movePoint.addInputPoint(point.getX() + 5, point.getY() + 5);
+                        movePoint.createDrawPoints();
+                        movePoints.add(movePoint);
+                        draw(movePoint, canvasPrime);
+                    }
+                    pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, changeObjectEvent);
+                    pane.addEventFilter(MouseEvent.MOUSE_CLICKED, moveObjectPointsEvent);
+                    break;
+                }
+            }
+        }
+    };
+
+    EventHandler<MouseEvent> moveObjectPointsEvent = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if(mouseEvent.getButton() == MouseButton.SECONDARY){
+                movePoints.clear();
+                redrawAllObjects();
+                isChange.setDisable(false);
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, moveObjectPointsEvent);
+                pane.addEventFilter(MouseEvent.MOUSE_CLICKED, changeObjectEvent);
+            }
+            else {
+                for (MovingPoint movingPoint : new ArrayList<>(movePoints)) {
+                    if (movingPoint.isIn((int) mouseEvent.getX(), (int) mouseEvent.getY())) {
+                        currentMovePoints = movingPoint;
+                        movePoints.remove(currentMovePoints);
+                        redrawAllObjects();
+                        draw(currentMovePoints, canvasSecondary);
+                        pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, moveObjectPointsEvent);
+                        pane.addEventFilter(MouseEvent.MOUSE_CLICKED, moveObjectPointsEvent2);
+                        break;
+                    }
+                }
+            }
+        }
+    };
+    EventHandler<MouseEvent> moveObjectPointsEvent2 = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if(mouseEvent.getButton() == MouseButton.SECONDARY){
+                currentObject.getDrawPoints().clear();
+                currentObject.createDrawPoints();
+                movePoints.add(currentMovePoints);
+
+                redrawAllObjects();
+                canvasSecondary.getGraphicsContext2D().clearRect(0, 0, canvasSecondary.getHeight(), canvasSecondary.getWidth());
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, moveObjectPointsEvent2);
+                pane.addEventFilter(MouseEvent.MOUSE_CLICKED, moveObjectPointsEvent);
+            }
+            else {
+                currentMovePoints.getDrawPoints().clear();
+
+                currentMovePoints.getInputPoints().get(0).setX((int) mouseEvent.getX());
+                currentMovePoints.getInputPoints().get(0).setY((int) mouseEvent.getY());
+                currentMovePoints.getInputPoints().get(1).setX((int) mouseEvent.getX() + 5);
+                currentMovePoints.getInputPoints().get(1).setY((int) mouseEvent.getY() + 5);
+
+                currentMovePoints.createDrawPoints();
+                canvasSecondary.getGraphicsContext2D().clearRect(0, 0, canvasSecondary.getHeight(), canvasSecondary.getWidth());
+                draw(currentMovePoints, canvasSecondary);
+            }
+
+//            Интересный эффект
+//            currentObject.getDrawPoints().clear();
+//            currentObject.createDrawPoints();
+//            draw(currentObject, canvasPrime);
+        }
+    };
     public void prepareForDraw(){
         currentObject.createDrawPoints();
         if(!isDebug.isSelected()){
@@ -99,6 +183,9 @@ public class Controller {
     public void redrawAllObjects(){
         canvasPrime.getGraphicsContext2D().clearRect(0, 0, canvasPrime.getWidth(), canvasPrime.getHeight());
         for(DrawableObject drawable : drawables){
+            draw(drawable,canvasPrime);
+        }
+        for(DrawableObject drawable : movePoints){
             draw(drawable,canvasPrime);
         }
     }
@@ -154,6 +241,16 @@ public class Controller {
             else {
                 menu.setDisable(false);
                 pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, deleteObjectEvent);
+            }
+        });
+        isChange.setOnAction(e->{
+            if(isChange.isSelected()){
+                menu.setDisable(true);
+                pane.addEventFilter(MouseEvent.MOUSE_CLICKED, changeObjectEvent);
+            }
+            else {
+                menu.setDisable(false);
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, changeObjectEvent);
             }
         });
         sc.setOnKeyPressed(new EventHandler<KeyEvent>() {
