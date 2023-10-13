@@ -49,7 +49,8 @@ public class BsplainCurveLine extends CurveLine {
 
             super.createDrawPoints();
         }
-
+        inputPoints.remove(zero);
+        inputPoints.remove(zeroL);
     }
 
     @Override
